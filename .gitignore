@@ -13,7 +13,7 @@ Thumbs.db
 *.swo
 
 # Виртуальные окружения Python
-.venv/
+.AI/
 venv/
 env/
 ENV/
