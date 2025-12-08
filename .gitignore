@@ -19,6 +19,7 @@ env/
 ENV/
 .conda/
 .venv*/
+.venv/
 
 # Кеши Python и скомпилированные файлы
 __pycache__/
