@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import pandas as pd
+# Добавляем numpy для эффективного создания тестовых данных
+import numpy as np
 
 from eda_cli.core import (
     compute_quality_flags,
@@ -59,3 +61,26 @@ def test_correlation_and_top_categories():
     city_table = top_cats["city"]
     assert "value" in city_table.columns
     assert len(city_table) <= 2
+
+#  Новый тест
+def test_new_quality_flags():
+
+    N_ROWS = 60
+        
+    df = pd.DataFrame({
+        "status": ['ACTIVE'] * N_ROWS,  
+        "user_id": [f"user_{i:03}" for i in range(N_ROWS)],
+        "value": np.random.randint(10, 100, N_ROWS)
+    })
+
+    df["user_id"] = df["user_id"].astype('object')
+    
+    summary = summarize_dataset(df)
+    missing_df = missing_table(df) 
+    flags = compute_quality_flags(summary, missing_df)
+
+    assert flags.get("has_constant_columns") is True, "Флаг 'has_constant_columns' должен быть True, так как 'status' константна."
+    
+    assert flags.get("has_high_cardinality_categoricals") is True, "Флаг 'has_high_cardinality_categoricals' должен быть True, так как unique('user_id') > 54."
+    
+    assert flags["quality_score"] == 0.8, "quality_score должен быть 0.8 (снижен из-за двух плохих эвристик)."

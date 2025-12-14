@@ -203,6 +203,8 @@ def compute_quality_flags(summary: DatasetSummary, missing_df: pd.DataFrame) -> 
     score -= max_missing_share  # чем больше пропусков, тем хуже
     if summary.n_rows < 100:
         score -= 0.2
+
+        
     if summary.n_cols > 100:
         score -= 0.1
 
