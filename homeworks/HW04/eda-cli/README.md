@@ -104,7 +104,10 @@ http://127.0.0.1:8000
 
 ## Эндпоинты сервиса
 
-### 1. `GET /health`
+ 1. `GET /health` — проверка работоспособности
+ 2. `POST /quality` — оценка качества по агрегированным признакам
+ 3. `POST /quality-from-csv` — оценка качества по CSV-файлу
+ 4. `POST /quality_flags_from_csv` — возвращает все булевы флаги качества из CSV (включая has_constant_columns, has_high_cardinality_categoricals из HW03)
 
 Простейший health-check.
 
