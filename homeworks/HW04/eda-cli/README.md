@@ -2,7 +2,7 @@
 
 Расширенная версия проекта `eda-cli` из Семинара 03.
 
-К существующему CLI-приложению для EDA добавлен **HTTP-сервис на FastAPI** с эндпоинтами `/health`, `/quality` и `/quality-from-csv`.  
+К существующему CLI-приложению для EDA добавлен **HTTP-сервис на FastAPI** с эндпоинтами `/health`, `/quality`, `/quality-from-csv` и `/quality-flags-from-csv`.  
 Используется в рамках Семинара 04 курса «Инженерия ИИ».
 
 ---
@@ -104,10 +104,10 @@ http://127.0.0.1:8000
 
 ## Эндпоинты сервиса
 
- 1. `GET /health` — проверка работоспособности
- 2. `POST /quality` — оценка качества по агрегированным признакам
- 3. `POST /quality-from-csv` — оценка качества по CSV-файлу
- 4. `POST /quality_flags_from_csv` — возвращает все булевы флаги качества из CSV (включая has_constant_columns, has_high_cardinality_categoricals из HW03)
+1.  `GET /health` — проверка работоспособности
+2.  `POST /quality` — оценка качества по агрегированным признакам
+3.  `POST /quality-from-csv` — оценка качества по CSV-файлу
+4.  `POST /quality-flags-from-csv` — оценка качества по CSV-файлу с использованием флагов EDA-ядра
 
 Простейший health-check.
 
@@ -147,7 +147,8 @@ http://127.0.0.1:8000/docs
 
 - вызывать `GET /health`;
 - вызывать `POST /quality` (форма для JSON);
-- вызывать `POST /quality-from-csv` (форма для загрузки файла).
+- вызывать `POST /quality-from-csv` (форма для загрузки файла);
+- вызывать `POST /quality-flags-from-csv` (форма для загрузки файла).
 
 ---
 
@@ -216,6 +217,7 @@ curl -X POST "http://127.0.0.1:8000/quality" \
   - `summarize_dataset`,
   - `missing_table`,
   - `compute_quality_flags`;
+
 - возвращает оценку качества датасета в том же формате, что `/quality`.
 
 **Запрос:**
@@ -245,6 +247,51 @@ curl -X POST "http://127.0.0.1:8000/quality-from-csv" \
 - `ok_for_model` - результат по эвристикам;
 - `quality_score` - интегральный скор качества;
 - `flags` - булевы флаги из `compute_quality_flags`;
+- `dataset_shape` - реальные размеры датасета (`n_rows`, `n_cols`);
+- `latency_ms` - время обработки запроса.
+
+---
+
+### 5. `POST /quality-flags-from-csv` – оценка качества по CSV-файлу с использованием флагов EDA-ядра
+
+Эндпоинт принимает CSV-файл, внутри:
+
+- читает его в `pandas.DataFrame`;
+- вызывает функции из `eda_cli.core`:
+
+  - `summarize_dataset`,
+  - `missing_table`,
+  - `compute_quality_flags`;
+
+- возвращает оценку качества датасета в том же формате, что `/quality`, но с использованием всех булевых флагов из `compute_quality_flags`, включая `has_constant_columns` и `has_high_cardinality_categoricals` из HW03.
+
+**Запрос:**
+
+```http
+POST /quality-flags-from-csv
+Content-Type: multipart/form-data
+file: <CSV-файл>
+```
+
+Через Swagger:
+
+- в `/docs` открыть `POST /quality-flags-from-csv`,
+- нажать `Try it out`,
+- выбрать файл (например, `data/example.csv`),
+- нажать `Execute`.
+
+**Пример вызова через `curl` (Linux/macOS/WSL):**
+
+```bash
+curl -X POST "http://127.0.0.1:8000/quality-flags-from-csv" \
+  -F "file=@data/example.csv"
+```
+
+Ответ будет содержать:
+
+- `ok_for_model` - результат по эвристикам;
+- `quality_score` - интегральный скор качества;
+- `flags` - все булевы флаги из `compute_quality_flags`;
 - `dataset_shape` - реальные размеры датасета (`n_rows`, `n_cols`);
 - `latency_ms` - время обработки запроса.
 
@@ -284,4 +331,4 @@ uv run pytest -q
 
 1. Запустить тесты `pytest`;
 2. Проверить работу CLI (`uv run eda-cli ...`);
-3. Проверить работу HTTP-сервиса (`uv run uvicorn ...`, затем `/health` и `/quality`/`/quality-from-csv` через `/docs` или HTTP-клиент).
+3. Проверить работу HTTP-сервиса (`uv run uvicorn ...`, затем `/health` и `/quality`/`/quality-from-csv`/`/quality-flags-from-csv` через `/docs` или HTTP-клиент).
