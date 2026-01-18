@@ -1,0 +1,14 @@
+{
+  "ds1": {
+    "best": "kmeans",
+    "best_k": 2
+  },
+  "ds2": {
+    "best": "kmeans",
+    "best_k": 2
+  },
+  "ds3": {
+    "best": "kmeans",
+    "best_k": 3
+  }
+}
