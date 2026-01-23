@@ -1,5 +1,13 @@
 {
-    "decision_tree": {
+    "Dummy": {
+        "params": "default",
+        "best_score": 0.6766666666666666
+    },
+    "LogisticRegression": {
+        "params": "default",
+        "best_score": 0.8275
+    },
+    "DecisionTree": {
         "params": {
             "ccp_alpha": 0.001,
             "max_depth": null,
@@ -8,7 +16,7 @@
         },
         "best_score": 0.8006480653344047
     },
-    "random_forest": {
+    "RandomForest": {
         "params": {
             "max_depth": 10,
             "max_features": "sqrt",
@@ -16,7 +24,7 @@
         },
         "best_score": 0.8492252277358293
     },
-    "gradient_boosting": {
+    "Boosting": {
         "params": {
             "learning_rate": 0.2,
             "max_depth": 5,
