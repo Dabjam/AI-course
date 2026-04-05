@@ -59,3 +59,5 @@ homeworks/**/data/
 *.tmp
 *.bak
 *.old
+
+homeworks/HW13/_trainer_output/
