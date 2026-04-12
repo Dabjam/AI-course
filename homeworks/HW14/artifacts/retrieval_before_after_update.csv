@@ -1,0 +1,5 @@
+﻿query,before_retrieved_sources,after_retrieved_sources,changed,before_hit_at_k,after_hit_at_k,expected_source
+когда полезно сочетать keyword search и векторный retrieval,doc_08 | doc_10 | doc_01,doc_13 | doc_08,True,0,1,doc_13
+как mini-RAG должен вести себя если доказательств недостаточно,doc_09 | doc_11 | doc_12,doc_14 | doc_13 | doc_09,True,0,1,doc_14
+зачем хранить metadata чанков и удалять дубликаты,doc_11 | doc_10 | doc_02,doc_15 | doc_11,True,0,1,doc_15
+почему после расширения базы знаний нужна переиндексация,doc_07 | doc_12,doc_07 | doc_14,True,1,1,doc_07
