@@ -1,0 +1,12 @@
+data:
+  path: data/telco_churn.csv
+  test_size: 0.2
+  val_size: 0.1
+  random_state: 42
+
+model:
+  artifact_path: artifacts/model.pkl
+
+service:
+  host: 0.0.0.0
+  port: 8000
